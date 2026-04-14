@@ -30,9 +30,6 @@ st.title("🚀 AI Image Enhancer SaaS")
 if "user" not in st.session_state:
     st.session_state.user = None
 
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-
 # =========================================================
 # 🔐 AUTH SECTION
 # =========================================================
@@ -41,21 +38,26 @@ if not st.session_state.user:
     menu = st.sidebar.selectbox("Menu", ["Login", "Signup"])
 
     # ---------- LOGIN ----------
-  if st.button("Login"):
-    try:
-        res = login(email, password)
+    if menu == "Login":
+        st.subheader("Login")
 
-        if res.user:
-            st.session_state.user = res.user
-            st.success("Login successful!")
+        email = st.text_input("Email")
+        password = st.text_input("Password", type="password")
 
-            st.rerun()   # ✅ ONLY THIS
+        if st.button("Login"):
+            try:
+                res = login(email, password)
 
-        else:
-            st.error("Invalid email or password")
+                if res.user:
+                    st.session_state.user = res.user
+                    st.success("Login successful!")
+                    st.rerun()
 
-        except Exception as e:
-        st.error(f"Login failed: {str(e)}")
+                else:
+                    st.error("Invalid email or password")
+
+            except Exception as e:
+                st.error(f"Login failed: {str(e)}")
 
     # ---------- SIGNUP ----------
     elif menu == "Signup":
@@ -71,11 +73,6 @@ if not st.session_state.user:
             except Exception:
                 st.error("Signup failed")
 
-# 🔁 FORCE PAGE SWITCH AFTER LOGIN (VERY IMPORTANT)
-if st.session_state.get("logged_in"):
-    st.session_state.logged_in = False
-    st.experimental_rerun()
-
 # =========================================================
 # 🚀 MAIN APP
 # =========================================================
@@ -88,7 +85,7 @@ if st.session_state.user:
     # ---------- LOGOUT ----------
     if option == "Logout":
         st.session_state.user = None
-        st.experimental_rerun()
+        st.rerun()
 
     # ---------- ENHANCE IMAGE ----------
     if option == "Enhance Image":
