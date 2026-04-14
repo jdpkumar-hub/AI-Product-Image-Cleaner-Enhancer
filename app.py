@@ -57,11 +57,7 @@ if not st.session_state.user:
 
     except Exception as e:
         st.error(f"Login failed: {str(e)}")
-        
-# 🔁 FORCE PAGE SWITCH AFTER LOGIN
-if st.session_state.get("logged_in"):
-    st.session_state.logged_in = False
-    st.experimental_rerun()
+
     
     # ---------- SIGNUP ----------
     elif menu == "Signup":
@@ -77,6 +73,11 @@ if st.session_state.get("logged_in"):
             except Exception:
                 st.error("Signup failed")
 
+        
+# 🔁 FORCE PAGE SWITCH AFTER LOGIN
+if st.session_state.get("logged_in"):
+    st.session_state.logged_in = False
+    st.experimental_rerun()
 # =========================================================
 # 🚀 MAIN APP
 # =========================================================
