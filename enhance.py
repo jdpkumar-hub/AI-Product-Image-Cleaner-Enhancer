@@ -3,7 +3,6 @@ from rembg import remove
 import io
 
 def enhance_image(image):
-    # Convert to RGB
     image = image.convert("RGB")
 
     # ---------- REMOVE BACKGROUND ----------
@@ -13,11 +12,11 @@ def enhance_image(image):
 
     image = Image.open(io.BytesIO(output_bytes)).convert("RGBA")
 
-    # ---------- ADD WHITE BACKGROUND ----------
+    # ---------- WHITE BACKGROUND ----------
     white_bg = Image.new("RGBA", image.size, (255, 255, 255, 255))
     image = Image.alpha_composite(white_bg, image).convert("RGB")
 
-    # ---------- ENHANCE ----------
+    # ---------- ENHANCEMENTS ----------
     image = image.filter(ImageFilter.SHARPEN)
 
     enhancer = ImageEnhance.Contrast(image)

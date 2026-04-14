@@ -3,7 +3,7 @@ from PIL import Image
 from auth import login, signup
 from enhance import enhance_image
 
-st.set_page_config(page_title="AI Image Enhancer", layout="wide")
+st.set_page_config(page_title="AI Image Cleaner", layout="wide")
 
 # ---------- UI STYLE ----------
 st.markdown("""
@@ -24,7 +24,7 @@ h1 {
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🚀 AI Image Enhancer SaaS")
+st.title("🚀 AI Product Image Cleaner")
 
 # ---------- SESSION ----------
 if "user" not in st.session_state:
@@ -52,7 +52,6 @@ if not st.session_state.user:
                     st.session_state.user = res.user
                     st.success("Login successful!")
                     st.rerun()
-
                 else:
                     st.error("Invalid email or password")
 
@@ -69,7 +68,7 @@ if not st.session_state.user:
         if st.button("Signup"):
             try:
                 signup(email, password)
-                st.success("Account created! Please verify your email.")
+                st.success("Account created! Please verify email.")
             except Exception:
                 st.error("Signup failed")
 
@@ -87,16 +86,10 @@ if st.session_state.user:
         st.session_state.user = None
         st.rerun()
 
-    # ---------- ENHANCE IMAGE ----------
+    # ---------- ENHANCE ----------
     if option == "Enhance Image":
 
-        st.subheader("Upload & Enhance Image")
-
-        # 🔥 Enhancement type
-        enhance_type = st.selectbox(
-            "Enhancement Type",
-            ["Full Clean (Recommended)", "Only Enhance"]
-        )
+        st.subheader("Upload & Clean Your Product Image")
 
         uploaded = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg"])
 
@@ -108,10 +101,8 @@ if st.session_state.user:
             with col1:
                 st.image(img, caption="Original", use_column_width=True)
 
-            if st.button("Enhance Image"):
-                with st.spinner("Processing..."):
-
-                    # 🔥 Apply enhancement
+            if st.button("✨ Clean Image"):
+                with st.spinner("AI cleaning your image..."):
                     result = enhance_image(img)
 
                 with col2:
@@ -121,7 +112,7 @@ if st.session_state.user:
 
                 with open("output.png", "rb") as f:
                     st.download_button(
-                        "Download Enhanced Image",
+                        "📥 Download Clean Image",
                         f,
-                        file_name="enhanced.png"
+                        file_name="cleaned_image.png"
                     )
