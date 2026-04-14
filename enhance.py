@@ -1,12 +1,17 @@
-from realesrgan import RealESRGAN
-import torch
-from PIL import Image
-
-device = torch.device('cpu')
-
-model = RealESRGAN(device, scale=4)
-model.load_weights('weights/RealESRGAN_x4.pth')
+from PIL import Image, ImageEnhance, ImageFilter
 
 def enhance_image(image):
     image = image.convert("RGB")
-    return model.predict(image)
+
+    # Sharpen
+    image = image.filter(ImageFilter.SHARPEN)
+
+    # Increase contrast
+    enhancer = ImageEnhance.Contrast(image)
+    image = enhancer.enhance(1.5)
+
+    # Increase sharpness
+    enhancer = ImageEnhance.Sharpness(image)
+    image = enhancer.enhance(2.0)
+
+    return image
