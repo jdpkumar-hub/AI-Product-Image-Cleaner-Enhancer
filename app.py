@@ -38,26 +38,24 @@ if not st.session_state.user:
     menu = st.sidebar.selectbox("Menu", ["Login", "Signup"])
 
     # ---------- LOGIN ----------
-    if menu == "Login":
-        st.subheader("Login")
+  # ---------- LOGIN ----------
+if st.button("Login"):
+    try:
+        res = login(email, password)
 
-        email = st.text_input("Email")
-        password = st.text_input("Password", type="password")
+        if res.user:
+            st.session_state.user = res.user
 
-        if st.button("Login"):
-            try:
-                res = login(email, password)
+            st.success("Login successful!")
 
-                if res.user:
-                    st.session_state.user = res.user
-                    st.success("Login successful!")
-                    st.rerun()
-                else:
-                    st.error("Invalid email or password")
+            # 🚀 Force immediate UI switch
+            st.experimental_rerun()
 
-            except:
-                st.error("Login failed")
+        else:
+            st.error("Invalid email or password")
 
+    except Exception as e:
+        st.error("Login failed")
     # ---------- SIGNUP ----------
     elif menu == "Signup":
         st.subheader("Create Account")
@@ -83,7 +81,7 @@ else:
 
     if option == "Logout":
         st.session_state.user = None
-        st.rerun()
+        st.experimental_rerun()
 
     if option == "Enhance Image":
 
