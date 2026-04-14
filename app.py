@@ -38,29 +38,31 @@ if not st.session_state.user:
     menu = st.sidebar.selectbox("Menu", ["Login", "Signup"])
 
     # ---------- LOGIN ----------
-    if menu == "Login":
-        st.subheader("Login")
+   if st.button("Login"):
+    try:
+        res = login(email, password)
 
-        email = st.text_input("Email")
-        password = st.text_input("Password", type="password")
+        if res.user:
+            st.session_state.user = res.user
 
-        if st.button("Login"):
-            try:
-                res = login(email, password)
+            # ✅ Stop everything immediately
+            st.session_state.logged_in = True
 
-                if res.user:
-                    st.session_state.user = res.user
-                    st.success("Login successful!")
+            st.success("Login successful!")
 
-                    # 🔥 Fix: instant redirect
-                    st.experimental_rerun()
+            st.stop()   # 🔥 VERY IMPORTANT
 
-                else:
-                    st.error("Invalid email or password")
+        else:
+            st.error("Invalid email or password")
 
-            except Exception:
-                st.error("Login failed")
-
+    except Exception as e:
+        st.error(f"Login failed: {str(e)}")
+        
+# 🔁 FORCE PAGE SWITCH AFTER LOGIN
+if st.session_state.get("logged_in"):
+    st.session_state.logged_in = False
+    st.experimental_rerun()
+    
     # ---------- SIGNUP ----------
     elif menu == "Signup":
         st.subheader("Create Account")
