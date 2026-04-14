@@ -69,7 +69,7 @@ if not st.session_state.user:
         if st.button("Signup"):
             try:
                 signup(email, password)
-                st.success("Account created! Please login.")
+                st.success("Account created! Please activate account or Confirm your signup in your email box email form .mail.app.supabase.io")
             except Exception:
                 st.error("Signup failed")
 
