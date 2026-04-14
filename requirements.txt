@@ -1,9 +1,10 @@
 streamlit
 pillow
-opencv-python
+opencv-python-headless
 torch
 torchvision
 realesrgan
 supabase
 stripe
 python-dotenv
+
