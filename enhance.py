@@ -6,11 +6,11 @@ def enhance_image(image):
     # Sharpen
     image = image.filter(ImageFilter.SHARPEN)
 
-    # Increase contrast
+    # Contrast
     enhancer = ImageEnhance.Contrast(image)
     image = enhancer.enhance(1.5)
 
-    # Increase sharpness
+    # Sharpness boost
     enhancer = ImageEnhance.Sharpness(image)
     image = enhancer.enhance(2.0)
 
