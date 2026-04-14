@@ -41,28 +41,21 @@ if not st.session_state.user:
     menu = st.sidebar.selectbox("Menu", ["Login", "Signup"])
 
     # ---------- LOGIN ----------
-    if menu == "Login":
-        st.subheader("Login")
+    if st.button("Login"):
+    try:
+        res = login(email, password)
 
-        email = st.text_input("Email")
-        password = st.text_input("Password", type="password")
+        if res.user:
+            st.session_state.user = res.user
+            st.success("Login successful!")
 
-        if st.button("Login"):
-            try:
-                res = login(email, password)
+            st.rerun()   # ✅ ONLY THIS
 
-                if res.user:
-                    st.session_state.user = res.user
-                    st.session_state.logged_in = True
+        else:
+            st.error("Invalid email or password")
 
-                    st.success("Login successful!")
-                    st.stop()   # 🔥 stops duplicate execution
-
-                else:
-                    st.error("Invalid email or password")
-
-            except Exception as e:
-                st.error(f"Login failed: {str(e)}")
+    except Exception as e:
+        st.error(f"Login failed: {str(e)}")
 
     # ---------- SIGNUP ----------
     elif menu == "Signup":
