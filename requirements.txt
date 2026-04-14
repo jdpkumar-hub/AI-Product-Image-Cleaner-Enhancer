@@ -4,4 +4,6 @@ opencv-python-headless
 supabase
 stripe
 python-dotenv
+rembg
+onnxruntime
 

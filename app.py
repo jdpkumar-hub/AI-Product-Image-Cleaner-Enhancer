@@ -69,7 +69,7 @@ if not st.session_state.user:
         if st.button("Signup"):
             try:
                 signup(email, password)
-                st.success("Account created! Please activate account or Confirm your signup in your email box email form .mail.app.supabase.io")
+                st.success("Account created! Please verify your email.")
             except Exception:
                 st.error("Signup failed")
 
@@ -92,6 +92,12 @@ if st.session_state.user:
 
         st.subheader("Upload & Enhance Image")
 
+        # 🔥 Enhancement type
+        enhance_type = st.selectbox(
+            "Enhancement Type",
+            ["Full Clean (Recommended)", "Only Enhance"]
+        )
+
         uploaded = st.file_uploader("Upload Image", type=["png", "jpg", "jpeg"])
 
         if uploaded:
@@ -104,6 +110,8 @@ if st.session_state.user:
 
             if st.button("Enhance Image"):
                 with st.spinner("Processing..."):
+
+                    # 🔥 Apply enhancement
                     result = enhance_image(img)
 
                 with col2:
