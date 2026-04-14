@@ -74,10 +74,10 @@ if not st.session_state.user:
                 st.error("Signup failed")
 
         
-# 🔁 FORCE PAGE SWITCH AFTER LOGIN
-if st.session_state.get("logged_in"):
-    st.session_state.logged_in = False
-    st.experimental_rerun()
+            # 🔁 FORCE PAGE SWITCH AFTER LOGIN
+            if st.session_state.get("logged_in"):
+                st.session_state.logged_in = False
+                st.experimental_rerun()
 # =========================================================
 # 🚀 MAIN APP
 # =========================================================
