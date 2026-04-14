@@ -30,6 +30,9 @@ st.title("🚀 AI Image Enhancer SaaS")
 if "user" not in st.session_state:
     st.session_state.user = None
 
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
 # =========================================================
 # 🔐 AUTH SECTION
 # =========================================================
@@ -38,27 +41,29 @@ if not st.session_state.user:
     menu = st.sidebar.selectbox("Menu", ["Login", "Signup"])
 
     # ---------- LOGIN ----------
-   if st.button("Login"):
-    try:
-        res = login(email, password)
+    if menu == "Login":
+        st.subheader("Login")
 
-        if res.user:
-            st.session_state.user = res.user
+        email = st.text_input("Email")
+        password = st.text_input("Password", type="password")
 
-            # ✅ Stop everything immediately
-            st.session_state.logged_in = True
+        if st.button("Login"):
+            try:
+                res = login(email, password)
 
-            st.success("Login successful!")
+                if res.user:
+                    st.session_state.user = res.user
+                    st.session_state.logged_in = True
 
-            st.stop()   # 🔥 VERY IMPORTANT
+                    st.success("Login successful!")
+                    st.stop()   # 🔥 stops duplicate execution
 
-        else:
-            st.error("Invalid email or password")
+                else:
+                    st.error("Invalid email or password")
 
-    except Exception as e:
-        st.error(f"Login failed: {str(e)}")
+            except Exception as e:
+                st.error(f"Login failed: {str(e)}")
 
-    
     # ---------- SIGNUP ----------
     elif menu == "Signup":
         st.subheader("Create Account")
@@ -73,15 +78,15 @@ if not st.session_state.user:
             except Exception:
                 st.error("Signup failed")
 
-        
-            # 🔁 FORCE PAGE SWITCH AFTER LOGIN
-            if st.session_state.get("logged_in"):
-                st.session_state.logged_in = False
-                st.experimental_rerun()
+# 🔁 FORCE PAGE SWITCH AFTER LOGIN (VERY IMPORTANT)
+if st.session_state.get("logged_in"):
+    st.session_state.logged_in = False
+    st.experimental_rerun()
+
 # =========================================================
 # 🚀 MAIN APP
 # =========================================================
-else:
+if st.session_state.user:
 
     st.sidebar.success(f"Welcome {st.session_state.user.email}")
 
