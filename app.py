@@ -41,7 +41,7 @@ if not st.session_state.user:
     menu = st.sidebar.selectbox("Menu", ["Login", "Signup"])
 
     # ---------- LOGIN ----------
-    if st.button("Login"):
+  if st.button("Login"):
     try:
         res = login(email, password)
 
@@ -54,7 +54,7 @@ if not st.session_state.user:
         else:
             st.error("Invalid email or password")
 
-    except Exception as e:
+        except Exception as e:
         st.error(f"Login failed: {str(e)}")
 
     # ---------- SIGNUP ----------
