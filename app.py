@@ -30,51 +30,63 @@ st.title("🚀 AI Image Enhancer SaaS")
 if "user" not in st.session_state:
     st.session_state.user = None
 
-# ---------- SIDEBAR ----------
-menu = st.sidebar.selectbox("Menu", ["Login", "Signup"])
+# =========================================================
+# 🔐 AUTH SECTION (ONLY WHEN NOT LOGGED IN)
+# =========================================================
+if not st.session_state.user:
 
-# ---------- LOGIN ----------
-if menu == "Login":
-    st.subheader("Login")
+    menu = st.sidebar.selectbox("Menu", ["Login", "Signup"])
 
-    email = st.text_input("Email")
-    password = st.text_input("Password", type="password")
+    # ---------- LOGIN ----------
+    if menu == "Login":
+        st.subheader("Login")
 
-    if st.button("Login"):
-        try:
-            res = login(email, password)
-            if res.user:
-                st.session_state.user = res.user
-                st.success("Login successful!")
-                st.rerun()
-        except:
-            st.error("Invalid credentials")
+        email = st.text_input("Email")
+        password = st.text_input("Password", type="password")
 
-# ---------- SIGNUP ----------
-elif menu == "Signup":
-    st.subheader("Create Account")
+        if st.button("Login"):
+            try:
+                res = login(email, password)
 
-    email = st.text_input("Email ")
-    password = st.text_input("Password ", type="password")
+                if res.user:
+                    st.session_state.user = res.user
+                    st.success("Login successful!")
+                    st.rerun()
+                else:
+                    st.error("Invalid email or password")
 
-    if st.button("Signup"):
-        try:
-            signup(email, password)
-            st.success("Account created! Please login.")
-        except:
-            st.error("Signup failed")
+            except:
+                st.error("Login failed")
 
-# ---------- MAIN APP ----------
-if st.session_state.user:
+    # ---------- SIGNUP ----------
+    elif menu == "Signup":
+        st.subheader("Create Account")
+
+        email = st.text_input("Email ")
+        password = st.text_input("Password ", type="password")
+
+        if st.button("Signup"):
+            try:
+                signup(email, password)
+                st.success("Account created! Please login.")
+            except:
+                st.error("Signup failed")
+
+# =========================================================
+# 🚀 MAIN APP (ONLY WHEN LOGGED IN)
+# =========================================================
+else:
 
     st.sidebar.success(f"Welcome {st.session_state.user.email}")
 
     option = st.sidebar.radio("Menu", ["Enhance Image", "Logout"])
 
+    # ---------- LOGOUT ----------
     if option == "Logout":
         st.session_state.user = None
         st.rerun()
 
+    # ---------- ENHANCE IMAGE ----------
     if option == "Enhance Image":
 
         st.subheader("Upload & Enhance Image")
